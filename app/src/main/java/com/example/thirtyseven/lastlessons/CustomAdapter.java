@@ -1,6 +1,7 @@
 package com.example.thirtyseven.lastlessons;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,9 +19,10 @@ import java.util.ArrayList;
 
 public class CustomAdapter extends ArrayAdapter<Lesson> {
     private Context context;
+    private TimeHelper timeHelper;
 
-    public CustomAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull ArrayList flat) {
-        super(context, 0, flat);
+    public CustomAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull ArrayList lesson) {
+        super(context, 0, lesson);
         this.context = context;
     }
 
@@ -42,7 +44,7 @@ public class CustomAdapter extends ArrayAdapter<Lesson> {
 
         lessonName.setText(String.valueOf(lesson.getLessonName()));
         teacherLesson.setText(String.valueOf(lesson.getTeacher()));
-        timeLesson.setText(String.valueOf(lesson.getTime()));
+        timeLesson.setText(String.valueOf(timeHelper.parseTime(lesson.getTime())));
         audienceLesson.setText(String.valueOf(lesson.getAudience()));
 
        /* address.setTextSize(23);

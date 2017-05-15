@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">LastLessons</string>
+    <string name="action_settings">Настройки</string>
+    <string name="schedule">Расписание</string>
+    <string name="replacement">Замена</string>
+    <string name="my_group">Моя группа</string>
+    <string name="my_profile">Мой профиль</string>
+</resources>

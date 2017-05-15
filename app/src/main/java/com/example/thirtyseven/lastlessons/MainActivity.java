@@ -13,17 +13,28 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     FirebaseDatabase firebaseDatabase;
-    DatabaseReference refMonday510;
+    DatabaseReference databaseReference;
     Button button;
+    ListView listView;
+    Lesson lesson;
+    ArrayList<Lesson> lessList;
+    ArrayAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +43,17 @@ public class MainActivity extends AppCompatActivity
 
         mainMethods();
         init();
+        setListener();
 
+        lessList = new ArrayList<>();
+        adapter = new CustomAdapter(this, R.layout.custom_adapter, lessList);
+        listView.setAdapter(adapter);
+
+
+
+    }
+
+    private void setListener() {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -41,12 +62,47 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        databaseReference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                lesson = dataSnapshot.getValue(Lesson.class);
+                lessList.add(lesson);
+                listView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                lesson = dataSnapshot.getValue(Lesson.class);
+                int index = lessList.indexOf(lesson);
+                lessList.set(index, lesson);
+                listView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     private void init() {
         firebaseDatabase = FirebaseDatabase.getInstance();
-        refMonday510 = firebaseDatabase.getReference("lessons").child("firstCourse").child("510").child("monday");
+        databaseReference = firebaseDatabase.getReference("lessons").child("510").child("monday");
         button = (Button) findViewById(R.id.button2);
+        listView = (ListView) findViewById(R.id.lessonList);
     }
 
     private void mainMethods() {
