@@ -5,9 +5,11 @@ class Lesson {
     private String lessonName;
     private String teacher;
     private int time;
-    private int audience;
+    private String audience;
+    private boolean isNormal;
+    private String oddOrEven;
 
-    public Lesson(String lessonName, String teacher, int time, int audience, boolean isNormal, char oddOrEven) {
+    public Lesson(String lessonName, String teacher, int time, String audience, boolean isNormal, String oddOrEven) {
         this.lessonName = lessonName;
         this.teacher = teacher;
         this.time = time;
@@ -16,8 +18,7 @@ class Lesson {
         this.oddOrEven = oddOrEven;
     }
 
-    private boolean isNormal;
-    private char oddOrEven;
+
 
     public boolean isNormal() {
         return isNormal;
@@ -27,18 +28,18 @@ class Lesson {
         isNormal = normal;
     }
 
-    public char getOddOrEven() {
+    public String getOddOrEven() {
         return oddOrEven;
     }
 
-    public void setOddOrEven(char oddOrEven) {
+    public void setOddOrEven(String oddOrEven) {
         this.oddOrEven = oddOrEven;
     }
 
     public Lesson() {
     }
 
-    public Lesson(String lessonName, String teacher, int time, int audience, boolean isNormal) {
+    public Lesson(String lessonName, String teacher, int time, String audience, boolean isNormal) {
         this.lessonName = lessonName;
         this.teacher = teacher;
         this.time = time;
@@ -58,7 +59,7 @@ class Lesson {
         this.time = time;
     }
 
-    public void setAudience(int audience) {
+    public void setAudience(String audience) {
         this.audience = audience;
     }
 
@@ -74,7 +75,7 @@ class Lesson {
         return time;
     }
 
-    public int getAudience() {
+    public String getAudience() {
         return audience;
     }
 }

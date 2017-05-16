@@ -62,6 +62,8 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+
+
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -74,9 +76,6 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 lesson = dataSnapshot.getValue(Lesson.class);
-                int index = lessList.indexOf(lesson);
-                lessList.set(index, lesson);
-                listView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
             }
 
@@ -174,10 +173,6 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
 
         }
 

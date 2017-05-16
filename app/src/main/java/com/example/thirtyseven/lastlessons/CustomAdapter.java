@@ -30,7 +30,7 @@ public class CustomAdapter extends ArrayAdapter<Lesson> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View listViewItem = convertView;
-        if(listViewItem == null){
+        if (listViewItem == null) {
             listViewItem = LayoutInflater.from(getContext()).inflate(R.layout.custom_adapter, parent, false);
         }
         Lesson lesson = getItem(position);
@@ -40,11 +40,13 @@ public class CustomAdapter extends ArrayAdapter<Lesson> {
         TextView timeLesson = (TextView) listViewItem.findViewById(R.id.timeLesson);
         TextView audienceLesson = (TextView) listViewItem.findViewById(R.id.audienceLesson);
 
-
+        timeHelper = new TimeHelper();
 
         lessonName.setText(String.valueOf(lesson.getLessonName()));
         teacherLesson.setText(String.valueOf(lesson.getTeacher()));
-        timeLesson.setText(String.valueOf(timeHelper.parseTime(lesson.getTime())));
+        int time = lesson.getTime();
+        String times = timeHelper.parseTime(time);
+        timeLesson.setText(times);
         audienceLesson.setText(String.valueOf(lesson.getAudience()));
 
        /* address.setTextSize(23);
@@ -53,7 +55,6 @@ public class CustomAdapter extends ArrayAdapter<Lesson> {
         roomCount.setText(String.valueOf(lesson.getRoomCount()));
         description.setText(String.valueOf(lesson.getDescription()));
         price.setText(String.valueOf(lesson.getPrice()));*/
-
 
 
         return listViewItem;

@@ -14,7 +14,6 @@
         <item>Четверг</item>
         <item>Пятница</item>
         <item>Суббота</item>
-        <item>Воскресенье</item>
     </string-array>
     <string name="replacement">Replacement</string>
     <string name="my_group">My group</string>

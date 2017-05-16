@@ -5,8 +5,11 @@ package com.example.thirtyseven.lastlessons;
  */
 
 class TimeHelper {
-    String timeStr;
+    String timeStr = "";
     int timeInt;
+
+    public TimeHelper() {
+    }
 
     public String parseTime(int time) {
 
