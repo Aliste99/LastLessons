@@ -19,19 +19,13 @@ import com.google.firebase.database.FirebaseDatabase;
 public class AddLessonActivity extends AppCompatActivity {
 
     FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference;
+    DatabaseReference databaseReferenceOdd;
+    DatabaseReference databaseReferenceEven;
     Button add, addSecondAud;
     EditText lesName, lesTeacher, lesNum, lesAud, groupName, lesAud2;
     Lesson lesson;
     private CheckBox checkBox;
     private Switch oddOrEven;
-    private String course;
-    final private String firstCourse = "firstCourse";
-    final private String secondCourse = "secondCourse";
-    final private String thirdCourse = "thirdCourse";
-    final private String four = "4";
-    final private String five = "5";
-    final private String six = "6";
     boolean keyIsSeconAud = false;
     Spinner dayOfWeek;
     String dofw;
@@ -127,66 +121,41 @@ public class AddLessonActivity extends AppCompatActivity {
             }
         });
 
-        dayOfWeek.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                dayOfWeek.setSelection(position);
-                switch (position) {
-                    case 0:
-                        dofw = "monday";
-                        break;
-                    case 1:
-                        dofw = "tuesday";
-                        break;
-                    case 2:
-                        dofw = "wednesday";
-                        break;
-                    case 3:
-                        dofw = "thursday";
-                        break;
-                    case 4:
-                        dofw = "friday";
-                        break;
-                    case 5:
-                        dofw = "saturday";
-                        break;
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (checkAll()) {
                     boolean isNormal = true;
-                    String oddOrEvenChar;
+                    String oddOrEvenStr;
                     String name = String.valueOf(lesName.getText());
                     String teacher = String.valueOf(lesTeacher.getText());
                     int group = Integer.parseInt(String.valueOf(groupName.getText()));
                     int time = Integer.parseInt(String.valueOf(lesNum.getText()));
                     String audience;
+
                     if (keyIsSeconAud && !lesAud2.getText().equals("")) {
                         audience = String.valueOf(lesAud.getText()) + "/" + String.valueOf(lesAud2.getText());
                     } else audience = String.valueOf(lesAud.getText());
-                    setRef(dofw, time, group);
                     if (checkBox.isChecked()) {
                         isNormal = false;
-                        if (oddOrEven.isChecked()) {
-                            oddOrEvenChar = "odd";
 
+                        if (oddOrEven.isChecked()) {
+                            oddOrEvenStr = "odd";
+                            lesson = new Lesson(name, teacher, time, audience, isNormal, oddOrEvenStr);
+                            setNotNormalRefOdd(dofw,  time, group, oddOrEvenStr);
+                            databaseReferenceOdd.setValue(lesson);
                         } else {
-                            oddOrEvenChar = "even";
+                            oddOrEvenStr = "even";
+                            lesson = new Lesson(name, teacher, time, audience, isNormal, oddOrEvenStr);
+                            databaseReferenceEven.setValue(lesson);
                         }
-                        setNotNormalRef(dofw, time, group, oddOrEvenChar);
-                        lesson = new Lesson(name, teacher, time, audience, isNormal, oddOrEvenChar);
+                        setNotNormalRefOdd(dofw, time, group, oddOrEvenStr);
+
                     } else lesson = new Lesson(name, teacher, time, audience, isNormal);
 
-                    databaseReference.setValue(lesson);
+                    databaseReferenceOdd.setValue(lesson);
+                    databaseReferenceEven.setValue(lesson);
                 }else
                     Toast.makeText(AddLessonActivity.this, "Один из пунктов не заполнен", Toast.LENGTH_SHORT).show();
 
@@ -205,10 +174,16 @@ public class AddLessonActivity extends AppCompatActivity {
 
     }
 
-    private void setNotNormalRef(String dayOfWeek, int time, int group, String oddOrEvenChar) {
+    private void setNotNormalRefOdd(String dayOfWeek, int time, int group, String oddOrEvenChar) {
         String timeSTR = String.valueOf(time);
-        databaseReference = firebaseDatabase.getReference("lessons").child(String.valueOf(group))
-                .child(dayOfWeek).child(timeSTR).child(oddOrEvenChar);
+        databaseReferenceOdd = firebaseDatabase.getReference("lessons").child(String.valueOf(group))
+                .child(dayOfWeek).child("odd").child(timeSTR);
+    }
+
+    private void setNotNormalRefEven(String dayOfWeek, int time, int group, String oddOrEvenChar) {
+        String timeSTR = String.valueOf(time);
+        databaseReferenceEven = firebaseDatabase.getReference("lessons").child(String.valueOf(group))
+                .child(dayOfWeek).child("even").child(timeSTR);
     }
 
     private void init() {
@@ -228,7 +203,7 @@ public class AddLessonActivity extends AppCompatActivity {
 
     private void setRef(String dayOfWeek, int time, int group) {
         String timeSTR = String.valueOf(time);
-        databaseReference = firebaseDatabase.getReference("lessons").child(String.valueOf(group))
+        databaseReferenceOdd = firebaseDatabase.getReference("lessons").child(String.valueOf(group))
                 .child(dayOfWeek).child(timeSTR);
     }
 }

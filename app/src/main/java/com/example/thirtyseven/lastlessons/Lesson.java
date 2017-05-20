@@ -18,7 +18,16 @@ class Lesson {
         this.oddOrEven = oddOrEven;
     }
 
+    public Lesson() {
+    }
 
+    public Lesson(String lessonName, String teacher, int time, String audience, boolean isNormal) {
+        this.lessonName = lessonName;
+        this.teacher = teacher;
+        this.time = time;
+        this.audience = audience;
+        this.isNormal = isNormal;
+    }
 
     public boolean isNormal() {
         return isNormal;
@@ -34,17 +43,6 @@ class Lesson {
 
     public void setOddOrEven(String oddOrEven) {
         this.oddOrEven = oddOrEven;
-    }
-
-    public Lesson() {
-    }
-
-    public Lesson(String lessonName, String teacher, int time, String audience, boolean isNormal) {
-        this.lessonName = lessonName;
-        this.teacher = teacher;
-        this.time = time;
-        this.audience = audience;
-        this.isNormal = isNormal;
     }
 
     public void setLessonName(String lessonName) {

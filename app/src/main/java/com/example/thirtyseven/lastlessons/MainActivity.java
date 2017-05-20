@@ -13,9 +13,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.Switch;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -33,6 +37,10 @@ public class MainActivity extends AppCompatActivity
     Button button;
     ListView listView;
     Lesson lesson;
+    Switch oddOrEven;
+    Spinner dayOfWeek;
+    String dofw, oddOrEvenStr = "even";
+    int group;
     ArrayList<Lesson> lessList;
     ArrayAdapter adapter;
 
@@ -44,11 +52,11 @@ public class MainActivity extends AppCompatActivity
         mainMethods();
         init();
         setListener();
-
+        dayOfWeek.setSelection(0);
+        dofw = "monday";
         lessList = new ArrayList<>();
         adapter = new CustomAdapter(this, R.layout.custom_adapter, lessList);
         listView.setAdapter(adapter);
-
 
 
     }
@@ -62,15 +70,71 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        oddOrEven.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    oddOrEven.setText("Числитель");
+                    oddOrEvenStr = "even";
+                } else {
+                    oddOrEven.setText("Знаменатель");
+                    oddOrEvenStr = "odd";
+                }
+            }
+        });
 
+        dayOfWeek.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                dayOfWeek.setSelection(position);
+                switch (position) {
+                    case 0:
+                        dayOfWeek.setSelection(0);
+                        dofw = "monday";
+                        break;
+                    case 1:
+                        dayOfWeek.setSelection(1);
+                        dofw = "tuesday";
+                        break;
+                    case 2:
+                        dayOfWeek.setSelection(2);
+                        dofw = "wednesday";
+                        break;
+                    case 3:
+                        dayOfWeek.setSelection(3);
+                        dofw = "thursday";
+                        break;
+                    case 4:
+                        dayOfWeek.setSelection(4);
+                        dofw = "friday";
+                        break;
+                    case 5:
+                        dayOfWeek.setSelection(5);
+                        dofw = "saturday";
+                        break;
+                    case 6:
+                        dayOfWeek.setSelection(6);
+                        dofw = "sunday";
+                        break;
+                }
+                refreshRef(dofw, group, oddOrEvenStr);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                dayOfWeek.setSelection(0);
+                dofw = "monday";
+                refreshRef(dofw, group, oddOrEvenStr);
+            }
+        });
 
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                lesson = dataSnapshot.getValue(Lesson.class);
+                /*lesson = dataSnapshot.getValue(Lesson.class);
                 lessList.add(lesson);
                 listView.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();*/
             }
 
             @Override
@@ -97,11 +161,17 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    private void refreshRef(String dofw, int group, String oddOrEvenStr) {
+        databaseReference = firebaseDatabase.getReference("lessons").child(String.valueOf(group)).child(oddOrEvenStr);
+    }
+
     private void init() {
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("lessons").child("510").child("monday");
+        databaseReference = firebaseDatabase.getReference("lessons").child("510").child("monday").child("even");
         button = (Button) findViewById(R.id.button2);
+        dayOfWeek = (Spinner) findViewById(R.id.spinner);
         listView = (ListView) findViewById(R.id.lessonList);
+        oddOrEven = (Switch) findViewById(R.id.switch1);
     }
 
     private void mainMethods() {
