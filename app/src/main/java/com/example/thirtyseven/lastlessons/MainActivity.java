@@ -34,6 +34,12 @@ public class MainActivity extends AppCompatActivity
 
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
+    DatabaseReference databaseReferenceMon;
+    DatabaseReference databaseReferenceTues;
+    DatabaseReference databaseReferenceWedn;
+    DatabaseReference databaseReferenceThurs;
+    DatabaseReference databaseReferenceFrid;
+    DatabaseReference databaseReferenceSatur;
     Button button;
     ListView listView;
     Lesson lesson;
@@ -54,9 +60,21 @@ public class MainActivity extends AppCompatActivity
         init();
         dofw = "monday";
         refreshRef(dofw, group, oddOrEvenStr);
+        sixRef(oddOrEvenStr);
         setListener();
         setAdapters();
         dayOfWeek.setSelection(0);
+
+    }
+
+    void sixRef(String odorevstr) {
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReferenceMon = firebaseDatabase.getReference("lessons").child("510").child("monday").child(odorevstr);
+        databaseReferenceTues = firebaseDatabase.getReference("lessons").child("510").child("tuesday").child(odorevstr);
+        databaseReferenceWedn = firebaseDatabase.getReference("lessons").child("510").child("wednesday").child(odorevstr);
+        databaseReferenceThurs = firebaseDatabase.getReference("lessons").child("510").child("thursday").child(odorevstr);
+        databaseReferenceFrid = firebaseDatabase.getReference("lessons").child("510").child("friday").child(odorevstr);
+        databaseReferenceSatur = firebaseDatabase.getReference("lessons").child("510").child("saturday").child(odorevstr);
 
     }
 
@@ -139,12 +157,12 @@ public class MainActivity extends AppCompatActivity
         });
 
 
-
         childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 lesson = dataSnapshot.getValue(Lesson.class);
-                lessList.add(lesson);
+                int order = lesson.getTime();
+                lessList.set(order, lesson);
                 adapter.notifyDataSetChanged();
             }
 
@@ -172,6 +190,12 @@ public class MainActivity extends AppCompatActivity
         };
 
         databaseReference.addChildEventListener(childEventListener);
+        databaseReferenceMon.addChildEventListener(childEventListener);
+        databaseReferenceTues.addChildEventListener(childEventListener);
+        databaseReferenceWedn.addChildEventListener(childEventListener);
+        databaseReferenceThurs.addChildEventListener(childEventListener);
+        databaseReferenceFrid.addChildEventListener(childEventListener);
+        databaseReferenceSatur.addChildEventListener(childEventListener);
 
     }
 
