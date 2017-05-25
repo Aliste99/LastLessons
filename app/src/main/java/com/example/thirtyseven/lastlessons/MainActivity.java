@@ -52,7 +52,13 @@ public class MainActivity extends AppCompatActivity
     Spinner dayOfWeek;
     String dofw, oddOrEvenStr = "even";
     int group = 510;
-    ArrayList<Lesson> lessList;
+    ArrayList<Lesson> lessListMonday;
+    ArrayList<Lesson> lessListTuesday;
+    ArrayList<Lesson> lessListWednesday;
+    ArrayList<Lesson> lessListThursday;
+    ArrayList<Lesson> lessListFriday;
+    ArrayList<Lesson> lessListSaturday;
+
     ArrayAdapter adapter;
     ChildEventListener childEventListener;
 
@@ -84,18 +90,28 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setAdapters() {
-        lessList = new ArrayList<>();
-        adapter = new CustomAdapter(this, R.layout.custom_adapter, lessList);
-        listViewMonday.setAdapter(adapter);
-        listViewTuesday.setAdapter(adapter);
-        listViewWednesday.setAdapter(adapter);
-        listViewThursday.setAdapter(adapter);
-        listViewFriday.setAdapter(adapter);
-        listViewSaturday.setAdapter(adapter);
-        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this,
+        lessListMonday = new ArrayList<>();
+        lessListTuesday = new ArrayList<>();
+        lessListWednesday = new ArrayList<>();
+        lessListThursday = new ArrayList<>();
+        lessListFriday = new ArrayList<>();
+        lessListSaturday = new ArrayList<>();
+        ArrayAdapter adapter1 = new CustomAdapter(this, R.layout.custom_adapter, lessListMonday);
+        ArrayAdapter adapter2 = new CustomAdapter(this, R.layout.custom_adapter, lessListTuesday);
+        ArrayAdapter adapter3 = new CustomAdapter(this, R.layout.custom_adapter, lessListWednesday);
+        ArrayAdapter adapter4= new CustomAdapter(this, R.layout.custom_adapter, lessListThursday);
+        ArrayAdapter adapter5 = new CustomAdapter(this, R.layout.custom_adapter, lessListFriday);
+        ArrayAdapter adapter6 = new CustomAdapter(this, R.layout.custom_adapter, lessListSaturday);
+        listViewMonday.setAdapter(adapter1);
+        listViewTuesday.setAdapter(adapter2);
+        listViewWednesday.setAdapter(adapter3);
+        listViewThursday.setAdapter(adapter4);
+        listViewFriday.setAdapter(adapter5);
+        listViewSaturday.setAdapter(adapter6);
+        ArrayAdapter<CharSequence> DofWAdapter = ArrayAdapter.createFromResource(this,
                 R.array.dayOfWeek, android.R.layout.simple_spinner_item);
-        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        dayOfWeek.setAdapter(adapter2);
+        DofWAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dayOfWeek.setAdapter(DofWAdapter);
     }
 
     private void setListener() {
@@ -172,7 +188,7 @@ public class MainActivity extends AppCompatActivity
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 lesson = dataSnapshot.getValue(Lesson.class);
                 int order = lesson.getTime();
-                lessList.set(order, lesson);
+                lessListMonday.set(order, lesson);
                 adapter.notifyDataSetChanged();
             }
 
