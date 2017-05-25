@@ -141,22 +141,25 @@ public class AddLessonActivity extends AppCompatActivity {
                         isNormal = false;
 
                         if (oddOrEven.isChecked()) {
-                            oddOrEvenStr = "odd";
-                            lesson = new Lesson(name, teacher, time, audience, isNormal, oddOrEvenStr);
-                            setNotNormalRefOdd(dofw,  time, group, oddOrEvenStr);
-                            databaseReferenceOdd.setValue(lesson);
-                        } else {
                             oddOrEvenStr = "even";
                             lesson = new Lesson(name, teacher, time, audience, isNormal, oddOrEvenStr);
+                            setNotNormalRefEven(dofw, time, group);
                             databaseReferenceEven.setValue(lesson);
+                        } else {
+                            oddOrEvenStr = "odd";
+                            lesson = new Lesson(name, teacher, time, audience, isNormal, oddOrEvenStr);
+                            setNotNormalRefOdd(dofw, time, group);
+                            databaseReferenceOdd.setValue(lesson);
                         }
-                        setNotNormalRefOdd(dofw, time, group, oddOrEvenStr);
-
-                    } else lesson = new Lesson(name, teacher, time, audience, isNormal);
-
-                    databaseReferenceOdd.setValue(lesson);
-                    databaseReferenceEven.setValue(lesson);
-                }else
+                    } else {
+                        setNotNormalRefEven(dofw, time, group);
+                        setNotNormalRefOdd(dofw, time, group);
+                        lesson = new Lesson(name, teacher, time, audience, isNormal);
+                        databaseReferenceOdd.setValue(lesson);
+                        databaseReferenceEven.setValue(lesson);
+                        Toast.makeText(AddLessonActivity.this, "Пара добавлена", Toast.LENGTH_SHORT).show();
+                    }
+                } else
                     Toast.makeText(AddLessonActivity.this, "Один из пунктов не заполнен", Toast.LENGTH_SHORT).show();
 
             }
@@ -164,23 +167,23 @@ public class AddLessonActivity extends AppCompatActivity {
     }
 
     private boolean checkAll() {
-        if(lesName.getText().toString().trim().length() == 0
+        if (lesName.getText().toString().trim().length() == 0
                 || lesNum.getText().toString().trim().length() == 0
                 || lesTeacher.getText().toString().trim().length() == 0
                 || lesAud.getText().toString().trim().length() == 0
-                || groupName.getText().toString().trim().length() == 0){
+                || groupName.getText().toString().trim().length() == 0) {
             return false;
-        }else return true;
+        } else return true;
 
     }
 
-    private void setNotNormalRefOdd(String dayOfWeek, int time, int group, String oddOrEvenChar) {
+    private void setNotNormalRefOdd(String dayOfWeek, int time, int group) {
         String timeSTR = String.valueOf(time);
         databaseReferenceOdd = firebaseDatabase.getReference("lessons").child(String.valueOf(group))
                 .child(dayOfWeek).child("odd").child(timeSTR);
     }
 
-    private void setNotNormalRefEven(String dayOfWeek, int time, int group, String oddOrEvenChar) {
+    private void setNotNormalRefEven(String dayOfWeek, int time, int group) {
         String timeSTR = String.valueOf(time);
         databaseReferenceEven = firebaseDatabase.getReference("lessons").child(String.valueOf(group))
                 .child(dayOfWeek).child("even").child(timeSTR);

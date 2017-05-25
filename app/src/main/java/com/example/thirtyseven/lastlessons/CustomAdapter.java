@@ -39,6 +39,7 @@ public class CustomAdapter extends ArrayAdapter<Lesson> {
         TextView teacherLesson = (TextView) listViewItem.findViewById(R.id.teacherLesson);
         TextView timeLesson = (TextView) listViewItem.findViewById(R.id.timeLesson);
         TextView audienceLesson = (TextView) listViewItem.findViewById(R.id.audienceLesson);
+        TextView order = (TextView) listViewItem.findViewById(R.id.orderView);
 
         timeHelper = new TimeHelper();
 
@@ -47,6 +48,7 @@ public class CustomAdapter extends ArrayAdapter<Lesson> {
         int time = lesson.getTime();
         String times = timeHelper.parseTime(time);
         timeLesson.setText(times);
+        order.setText(String.valueOf(lesson.getTime()));
         audienceLesson.setText(String.valueOf(lesson.getAudience()));
 
        /* address.setTextSize(23);
