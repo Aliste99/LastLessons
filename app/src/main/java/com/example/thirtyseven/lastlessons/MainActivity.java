@@ -35,7 +35,12 @@ public class MainActivity extends AppCompatActivity
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     Button button;
-    ListView listView;
+    ListView listViewMonday;
+    ListView listViewTuesday;
+    ListView listViewWednesday;
+    ListView listViewThursday;
+    ListView listViewFriday;
+    ListView listViewSaturday;
     Lesson lesson;
     Switch oddOrEven;
     Spinner dayOfWeek;
@@ -63,7 +68,12 @@ public class MainActivity extends AppCompatActivity
     private void setAdapters() {
         lessList = new ArrayList<>();
         adapter = new CustomAdapter(this, R.layout.custom_adapter, lessList);
-        listView.setAdapter(adapter);
+        listViewMonday.setAdapter(adapter);
+        listViewTuesday.setAdapter(adapter);
+        listViewWednesday.setAdapter(adapter);
+        listViewThursday.setAdapter(adapter);
+        listViewFriday.setAdapter(adapter);
+        listViewSaturday.setAdapter(adapter);
         ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this,
                 R.array.dayOfWeek, android.R.layout.simple_spinner_item);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -187,7 +197,12 @@ public class MainActivity extends AppCompatActivity
 //        databaseReference = firebaseDatabase.getReference("lessons").child("510").child("monday").child("odd");
         button = (Button) findViewById(R.id.button2);
         dayOfWeek = (Spinner) findViewById(R.id.groupSpinner);
-        listView = (ListView) findViewById(R.id.lessonListMond);
+        listViewMonday = (ListView) findViewById(R.id.lessonListMond);
+        listViewTuesday = (ListView) findViewById(R.id.lessonListTuesday);
+        listViewWednesday = (ListView) findViewById(R.id.lessonListWednesday);
+        listViewThursday = (ListView) findViewById(R.id.lessonListThursday);
+        listViewFriday = (ListView) findViewById(R.id.lessonListFriday);
+        listViewSaturday = (ListView) findViewById(R.id.lessonListSaturday);
         oddOrEven = (Switch) findViewById(R.id.switch1);
         dayOfWeek = (Spinner) findViewById(R.id.groupSpinner);
     }
